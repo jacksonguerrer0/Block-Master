@@ -20,22 +20,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 1rem;
 }
 .imgDetalle{
     width: 200px;
     height: 300px;
 }
 
-
-/* .textDetalle{
-    padding: 2rem;
-} */
+.textDetalle{
+    padding: 1rem;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+}
 .containerButtonDe{
     display: flex;
-    flex-flow: row wrap;
     width: 100%;
     justify-content: space-around;
     position: inherit;
+    align-self: flex-end;
 }
 .ButtonDetalle{
     width: 47%;

@@ -1,6 +1,5 @@
 import React from 'react'
 import Grid from '../components/Grid'
-import { CardFilm } from '../layout/all-films/card-film/CardFilm'
 
 const AllFilms = () => {
     return (

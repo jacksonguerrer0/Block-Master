@@ -28,7 +28,7 @@ const NavMenu = () => {
         <Form.Control
           type="search"
           placeholder="Buscar"
-          className="mr-2 inputBusqueda"
+          className="mr-2 inputBusqueda shadow-none"
           aria-label="Search"
         />
         <button className="buttonSearch">

@@ -17,6 +17,7 @@ const Routes = () => {
     --white: #FFFFFE;
     --fontPrimary: "Montserrat", sans-serif;
     --fontSecondary: 'Inter', sans-serif;
+    --blue: #5574B8;
     }
         body{ 
             background-color: var(--background);

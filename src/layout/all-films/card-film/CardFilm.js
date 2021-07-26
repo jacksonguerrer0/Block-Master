@@ -1,13 +1,16 @@
 import styled from 'styled-components'
 
 export const CardFilm = styled.div`
-    background-color: cyan;
+    background-image: url(${({imagen})=> imagen && imagen});
     border-radius: 8px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 `
 export const Pegatin = styled.div`
     display: -webkit-box;
     align-items: center;
-    background-color: rgba(255, 0, 0, 0.5);
+    background-color: rgb(45 44 53 / 78%);;
     border: 2px solid var(--primary);
     width: 6rem;
     height: 2.9rem;

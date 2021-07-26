@@ -6,6 +6,9 @@
     color: var(--primary) !important;
 
 }
+a:hover{
+    color: white;
+}
 .buttonNavbar{
     background-color: var(--primary);
 }
@@ -17,9 +20,11 @@
     border-color: var(--primary);
     border-radius:8px 0px 0px 8px;
 }
-.inputBusqueda:focus {
-    outline: none;
+.inputBusqueda:focus{
+    border-color: var(--primary);
+    border-radius:8px 0px 0px 8px;
 }
+
 .buttonSearch{
     background-color: var(--primary);
     border-color: var(--primary);

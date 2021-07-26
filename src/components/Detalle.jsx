@@ -1,15 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../layout/menu-styles/carrusel/carrusel.css'
 import '../layout/all-films/detalle/detalle.css'
 import { Span } from '../styles/tagsText'
 import { CardFilm, Pegatin } from '../layout/all-films/card-film/CardFilm'
-const Detalle = () => {
+const Detalle = ({element}) => {
     return (
-        <div>
-            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Launch demo modal
-            </button>
-
+        <>
             <div className="modal fade " id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered  modal-xl ">
                 <div className="modal-content">
@@ -18,17 +14,18 @@ const Detalle = () => {
                     </div>
                     <div className="modal-body">
                         <div className='containerImg'>
-                        <CardFilm className='imgDetalle'>
-                            <Pegatin>
+                        <CardFilm className='imgDetalle' style={!element?{backgroundColor: 'var(--primary)'}: {border:'0px'}} imagen={element?.imagen}>
+                            <Pegatin style={element?.raiting <= 50 ? {border: '2px solid var(--blue)'}:{border: '2px solid var(--primary)'} }>
+
                                 <i className="fas fa-star" style={{color: "var(--primary)", fontSize:"20px"}}/>
-                                <h4 style={{ marginBottomB:"50px"}}>7.9</h4>
+                                <h4>{element?.raiting}</h4>
                             </Pegatin> 
                         </CardFilm> 
                         </div>
                         <div className='textDetalle'>
-                            <h2>Titulo Pelicula</h2>
-                            <p>Descripcion</p>
-                            <Span>fechass</Span>
+                            <h2>{element?.name}</h2>
+                            <p>{element?.description}</p>
+                            <Span>{element?.date}</Span>
                                 <div className="containerButtonDe">
                                 <button type="button" className="primary buttonCarrusel ButtonDetalle" data-bs-dismiss="modal"><i className="fas fa-play pr-2"></i>VER AHORA</button>
                                 <button type="button" className="secondary buttonCarrusel ButtonDetalle"><i className="fas fa-plus"></i>VER MÁS TARDE</button>
@@ -38,7 +35,7 @@ const Detalle = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
