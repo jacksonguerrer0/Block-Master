@@ -1,10 +1,16 @@
 import React from 'react'
 import { Navbar,Nav, Form, Button } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
+import { logoutEvent } from '../../../redux/loginDucks'
 import './menu.css'
 
 
 const NavMenu = () => {
+  const dispatch = useDispatch()
+  const handleLogoutClick = () => {
+        dispatch(logoutEvent())
+  } 
   return (
     <Navbar className='pb-sm-5' expand="md"> 
     <Navbar.Toggle aria-controls="navbarScroll" className='buttonNavbar' />
@@ -35,6 +41,7 @@ const NavMenu = () => {
         <i className="fas fa-search"></i>
         </button>
       </Form>
+      <i className="fas fa-sign-out-alt" onClick={handleLogoutClick}></i>
   </Navbar>
   )
 }

@@ -33,6 +33,12 @@ a:hover{
     width: 74px;
     height: 44px;
 }
+.fa-sign-out-alt{
+    color: var(--primary);
+    padding-left: 1rem;
+    font-size: 2rem;
+
+}
 .contentItems{
     width: 100%;
     display: flex;
