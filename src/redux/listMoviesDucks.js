@@ -18,6 +18,12 @@ const moviesDucks = (state= { movies:[] }, action) => {
                 ...state, 
                 movies: [action.payload, ...state.movies]
             }
+        case types.searchMovie:
+            return {
+                ...state,
+                movies: [...state.movies],
+                moviesRender: action.payload
+            }
         default:
             return state;
     }
@@ -71,7 +77,7 @@ export const movieNew = (movie, file) => {
         }
 
         const newMovie = {
-            id: movie.title + movie.video,
+            id: movie.title,
             title: movie.title,
             video: movie.video,
             release_date: movie.release_date,
@@ -95,20 +101,48 @@ export const addNewMovie = (newMovie) => ({
 
 
 
+// editar pelis
+
+export const EditMovie = (movie, file, editModal) => {
+    return async (dispatch) => {
+        let fileUrl=[]
+        try {
+            fileUrl = await fileUpload(file)
+        } catch (error) {
+            fileUrl = []
+            console.log(error)
+        }
+
+        const updateMovie = {
+            id: movie.title,
+            title: movie.title,
+            video: movie.video,
+            release_date: movie.release_date,
+            vote_average: movie.vote_average,
+            overview: movie.overview,
+            image: fileUrl
+        }
+        const document2 = await db.collection('/movies').path
+        console.log(document2)
+        // const document = await db.collection('/movies').doc(editModal.id).update(updateMovie)
+        
+        
+        // console.log(document)
+}
+}
 
 
+// barra bsuqueda 
 
+export const listSearchStore = (searchText) => (dispatch, getState) => {
+    const {movies} = getState().movies
+    const filterSearch = movies.filter(ele =>
+        (ele.title.toLowerCase().includes(searchText.toLowerCase()))
+        )
+        dispatch(searchMovie(filterSearch))
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const searchMovie = (filterSearch) => ({
+    type: types.searchMovie,
+    payload: filterSearch
+} )

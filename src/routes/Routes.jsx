@@ -12,7 +12,7 @@ import PrivateRoutes from './PrivateRoutes'
 import PublicRoute from './PublicRoutes'
 import Admin from '../containers/Admin'
 import { login } from '../redux/loginDucks'
-import { listMoviesApi } from '../redux/listMoviesDucks'
+import { listMoviesApi, listSearchStore } from '../redux/listMoviesDucks'
 import ViewFilm from '../components/ViewFilm'
 
 
@@ -21,7 +21,6 @@ const Routes = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [checking, setChecking] = useState(true);
     const dispatch = useDispatch()
-    const state = useSelector(state => state.state)
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged(async (user) => {

@@ -4,7 +4,6 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import AddFilm from './AddFilm';
-// import AddFilm from './AddFilm';
 
 const TableAdmin = ({data, columns}) => {
 

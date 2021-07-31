@@ -2,6 +2,7 @@ import React from 'react'
 import { Navbar,Nav, Form, Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
+import InputSearch from '../../../components/InputSearch'
 import { logoutEvent } from '../../../redux/loginDucks'
 import './menu.css'
 
@@ -35,17 +36,9 @@ const NavMenu = ({showSearchCarrusel, setShowSearchCarrusel}) => {
     </Navbar.Collapse>
         {
                 showSearchCarrusel &&     
-                <Form className="d-flex barraBusqueda">
-                <Form.Control
-                  type="search"
-                  placeholder="Buscar"
-                  className="mr-2 inputBusqueda shadow-none"
-                  aria-label="Search"
-                />
-                <button className="buttonSearch">
-                <i className="fas fa-search"></i>
-                </button>
-              </Form>
+                <>
+                <InputSearch />
+              </>
         }
       <i className="fas fa-sign-out-alt" onClick={handleLogoutClick}></i>
   </Navbar>
