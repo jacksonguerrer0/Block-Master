@@ -6,7 +6,7 @@ import { logoutEvent } from '../../../redux/loginDucks'
 import './menu.css'
 
 
-const NavMenu = () => {
+const NavMenu = ({showSearchCarrusel, setShowSearchCarrusel}) => {
   const dispatch = useDispatch()
   const handleLogoutClick = () => {
         dispatch(logoutEvent())
@@ -14,33 +14,39 @@ const NavMenu = () => {
   return (
     <Navbar className='pb-sm-5' expand="md"> 
     <Navbar.Toggle aria-controls="navbarScroll" className='buttonNavbar' />
-    <Link to='/' className='d-none d-md-block'>
+    <Link to='/' className='d-none d-md-block' onClick={()=> {setShowSearchCarrusel(true)}}>
             <img src="https://i.imgur.com/vcIFPQU.png" alt="" />
     </Link>
     <Navbar.Collapse id="navbarScroll" className='contentItems'>
         <nav className='d-sm-flex navbar-nav'>
-        <NavLink exact to="/"  className='itemNav' activeClassName='activeLink a'>
+        <NavLink exact to="/"  className='itemNav' activeClassName='activeLink a' onClick={()=> {setShowSearchCarrusel(true)}}>
                 Todas
         </NavLink>
-        <NavLink to="/Valorados"  className='itemNav' activeClassName='activeLink a' >
+        <NavLink to="/valorados"  className='itemNav' activeClassName='activeLink a' onClick={()=> {setShowSearchCarrusel(true)}}>
                 Más Valorados
         </NavLink>
-        <NavLink to="/Guardados"  className='itemNav' activeClassName='activeLink a'>
+        <NavLink to="/guardados"  className='itemNav' activeClassName='activeLink a' onClick={()=> {setShowSearchCarrusel(true)}}>
                 Guardados
+        </NavLink>        
+        <NavLink to="/admin"  className='itemNav' activeClassName='activeLink a' onClick={()=> {setShowSearchCarrusel(false)}}>
+                ADMIN
         </NavLink>
         </nav>
     </Navbar.Collapse>
-    <Form className="d-flex barraBusqueda">
-        <Form.Control
-          type="search"
-          placeholder="Buscar"
-          className="mr-2 inputBusqueda shadow-none"
-          aria-label="Search"
-        />
-        <button className="buttonSearch">
-        <i className="fas fa-search"></i>
-        </button>
-      </Form>
+        {
+                showSearchCarrusel &&     
+                <Form className="d-flex barraBusqueda">
+                <Form.Control
+                  type="search"
+                  placeholder="Buscar"
+                  className="mr-2 inputBusqueda shadow-none"
+                  aria-label="Search"
+                />
+                <button className="buttonSearch">
+                <i className="fas fa-search"></i>
+                </button>
+              </Form>
+        }
       <i className="fas fa-sign-out-alt" onClick={handleLogoutClick}></i>
   </Navbar>
   )

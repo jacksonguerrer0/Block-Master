@@ -1,0 +1,94 @@
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Swal from 'sweetalert2'
+import { ContainerAdmin, ImgAdmin } from '../components/admin-styled/AdminStyled'
+import TableAdmin from '../components/TableAdmin'
+import { deleteMovie } from '../redux/listMoviesDucks'
+
+
+const Admin = () => {
+        const dispatch = useDispatch()
+        const { name } = useSelector(state => state.login)
+        const {movies} = useSelector(state => state.movies)
+
+        const handleDelete = (movie) => {
+            Swal.fire({
+                title: `Estás seguro de eliminar ${movie.title} ?`,
+                text: "Esta acción no es reversible!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí Eliminarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    dispatch(deleteMovie(movie.id)).then((response) => {
+                        if (response) {
+                            Swal.fire(
+                                'Oops!',
+                                'Ha ocurrido un error al eliminar.',
+                                'error'
+
+                              )
+                        }else{
+                            Swal.fire(
+                                'Eliminado!',
+                                'Tu archivo ha sido eliminado.',
+                                'success'
+                            )
+                        }
+                    })
+                }
+            })
+        }
+        const handleEdit = (movie) => {
+            console.log('edit' + movie.id)
+        }
+        const columns = [
+            {
+                dataField: 'title',
+                text: 'Nombre',
+                sort: true
+            },
+            {
+                dataField: 'release_date',
+                text: 'Fecha de lanzamiento'
+            },
+            {
+                dataField: 'poster_path',
+                text: 'Póster',
+                isDummyField: true,
+                formatter: (cellContent, row) => {
+                    return (
+                      <ImgAdmin src={row.image ? row.image :`https://image.tmdb.org/t/p/w500${row.poster_path}`} alt="Imagen" />
+                    );
+                }
+            },
+            {
+                dataField: 'edit',
+                text: 'Acciones',
+                isDummyField: true,
+                formatter: (cellContent, row) => {
+                    return (
+                        <>
+                            <button className="btn btn-primary me-2" onClick={()=>{handleEdit(row)}}>Editar</button>
+                            <button  className="btn btn-danger m2-2" onClick={()=> {handleDelete(row)}}>Eliminar</button>
+                        </>
+                    );
+                }
+            }
+        ]
+    
+        return (
+            <div>
+                <h2>Hola</h2>
+                <p>{name}</p>
+                <ContainerAdmin>
+                <TableAdmin columns={columns} data={movies} />
+                </ContainerAdmin>
+            </div>
+        )
+}
+    
+
+export default Admin

@@ -4,14 +4,16 @@ import AllFilms from '../containers/AllFilms'
 import MostValued from '../containers/MostValued'
 import SaveFilms from '../containers/SaveFilms'
 import '../styles/variables.js'
-import Register from '../components/Register'
 import Login from '../components/Login'
 import { GlobalStyles } from '../styles/GlobalStyles'
 import { firebase } from '../firebase-config/firebaseConfig'
-import { useDispatch } from 'react-redux'
-import { login } from '../redux/loginDucks'
+import { useDispatch, useSelector } from 'react-redux'
 import PrivateRoutes from './PrivateRoutes'
 import PublicRoute from './PublicRoutes'
+import Admin from '../containers/Admin'
+import { login } from '../redux/loginDucks'
+import { listMoviesApi } from '../redux/listMoviesDucks'
+import ViewFilm from '../components/ViewFilm'
 
 
 
@@ -19,11 +21,14 @@ const Routes = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [checking, setChecking] = useState(true);
     const dispatch = useDispatch()
+    const state = useSelector(state => state.state)
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged(async (user) => {
             if(user?.uid){
                 setIsLoggedIn(true)
+                dispatch(login(user.uid, user.email, user.displayName))
+                dispatch(listMoviesApi())
             }
             else{
                 setIsLoggedIn(false)
@@ -37,7 +42,6 @@ const Routes = () => {
             <h1>cargando</h1>
         )
     }
-    console.log(isLoggedIn)
     return (
         <Router>
             <GlobalStyles/>
@@ -50,23 +54,28 @@ const Routes = () => {
                 <PrivateRoutes 
                     isAuthenticated={isLoggedIn}
                     exact
-                    path="/Valorados"
+                    path="/valorados"
                     component={ MostValued } />
                 <PrivateRoutes 
                     isAuthenticated={isLoggedIn}
                     exact
-                    path="/Guardados"
+                    path="/guardados"
                     component={ SaveFilms } />
+                <PrivateRoutes 
+                    isAuthenticated={isLoggedIn}
+                    exact
+                    path="/admin"
+                    component={ Admin } />
+                <PrivateRoutes 
+                    isAuthenticated={isLoggedIn}
+                    exact
+                    path="/view/:title"
+                    component={ ViewFilm } />
                 <PublicRoute 
                     isAuthenticated={isLoggedIn}
                     exact
                     path="/login"
                     component={ Login } />
-                <PublicRoute 
-                    isAuthenticated={isLoggedIn}
-                    exact
-                    path="/register"
-                    component={ Register } />
                 <Redirect to="/login" />
             </Switch>
         </Router>

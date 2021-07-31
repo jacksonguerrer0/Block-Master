@@ -1,44 +1,44 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { CardFilm, Pegatin } from '../layout/all-films/card-film/CardFilm'
 import {ContainerCard} from '../layout/all-films/grid/Grid'
 import Detalle from './Detalle'
-import db from '../db/db'
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useSelector } from 'react-redux'
 
 
 const Grid = () => {
+    const {movies} = useSelector(state => state.movies)
     const [element, setElement] = useState(null)
-    const [card, setCard] = useState(Array.from({length: 10}))
-
+    // const [moviesNext, setMoviesNext] = useState({
+    //     min: 0,
+    //     max: 15
+    // })
     // console.log(Array.from({length: 3}))
     const handleModal = (ele) => {
-        setElement(db?.find(el => el.id === ele))
+        setElement(ele)
     }
-    const fetchMoreData = () => {
-        setTimeout(() => {
-          setCard(card.concat(Array.from({ length: 10 })));
-        }, 1500);
-      };
-
+    console.log(element)
     return (
-        <InfiniteScroll  dataLength={card.length} next={fetchMoreData} hasMore={true} loader={<h4>Loading...</h4>}>
+        <InfiniteScroll  
+        dataLength={movies.length} 
+        next={movies.length+10} 
+        hasMore={true} 
+        loader={<h4>Loading...</h4>}>
             <ContainerCard >
             {
-                db.map((ele) => (
-                    <CardFilm data-bs-toggle="modal" data-bs-target="#exampleModal" key={ele.id} onClick={() => handleModal(ele.id)} imagen={ele.imagen} >
-                    <Pegatin style={ele?.raiting <= 50 ? {border: '2px solid var(--blue)'}:{border: '2px solid var(--primary)'} }>
-                        <i className="fas fa-star" style={{color: "var(--primary)", fontSize:"20px"}}/>
-                        <h4 style={{ marginBottomB:"50px"}}>{ele.raiting}</h4>
-                    </Pegatin>
-                    </CardFilm>  
-                ))
-            }
-            {
-                card.map((ele, i) => (
-                    <CardFilm data-bs-toggle="modal" data-bs-target="#exampleModal" key={i} onClick={() => handleModal(ele)} style={{background: 'var(--primary)'}}>
-                    <Pegatin>
-                        <i className="fas fa-star" style={{color: "var(--primary)", fontSize:"20px"}}/>
-                        <h4 style={{ marginBottomB:"50px"}}>{}</h4>
+                movies.map((ele, i) => (
+                    <CardFilm 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#exampleModal" 
+                    key={i} 
+                    onClick={() => handleModal(ele)} 
+                    imagen={ ele?.image ? ele?.image : `https://image.tmdb.org/t/p/w500/`+ 
+                    ele?.poster_path}>
+                    <Pegatin style={ele?.vote_average <= 7.0 ? {border: '2px solid var(--blue)'}:{border: '2px solid var(--primary)'}}>
+                        <i className="fas fa-star" 
+                        style={{color: "var(--primary)", fontSize:"20px"}}/>
+                        <h4 
+                         >{ele.vote_average}</h4>
                     </Pegatin>
                     </CardFilm> 
                 ))

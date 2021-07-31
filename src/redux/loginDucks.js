@@ -12,7 +12,8 @@ const loginDucks = (state = {}, action) => {
             return {
                 ...state,
                 uid: action.payload.id,
-                email: action.payload.email
+                email: action.payload.email,
+                name: action.payload.name
             }
         case types.logout:
             return {}
@@ -25,10 +26,10 @@ export default loginDucks
 
 
 // funcion para ver en reducer los datos
-export const login = (id, email) => ({
+export const login = (id, email, name) => ({
     type: types.login,
     payload: {
-        id, email
+        id, email, name
     }
 })
 
@@ -44,18 +45,17 @@ export const loginGoogle = ()=> (dispatch) => {
 export const loginWhitEmailPassword = (email, password) => (dispatch) => {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(({user})=>{
-            dispatch(login(user.uid, user.email))
+            dispatch(login(user.uid, user.email, user.displayName))
         })
         .catch(error => {
             throw error
         })
 }
-
-export const registerWhitEmailPassword =  (email, password, name) => () => {
+export const registerWhitEmailPassword =  (email, password, name) => (dispatch) => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(async ({user})=>{
-            await user.updateProfile({displayName: name})
-            console.log(user)
+            const data = await user.updateProfile({displayName: name})
+            dispatch(login(email, password, name ))
         })
         .catch(error =>{
             throw error

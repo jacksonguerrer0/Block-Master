@@ -8,7 +8,6 @@ const PrivateRoutes = ({
     component: Component,
     ...rest
 }) => {
-console.log(isAuthenticated)
     return (
         <>
         <Menu />
