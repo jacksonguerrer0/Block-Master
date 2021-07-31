@@ -54,7 +54,7 @@ export const loginWhitEmailPassword = (email, password) => (dispatch) => {
 export const registerWhitEmailPassword =  (email, password, name) => (dispatch) => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(async ({user})=>{
-            const data = await user.updateProfile({displayName: name})
+            await user.updateProfile({displayName: name})
             dispatch(login(email, password, name ))
         })
         .catch(error =>{

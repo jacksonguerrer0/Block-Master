@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import { ContainerAdmin, ImgAdmin } from '../components/admin-styled/AdminStyled'
 import EditFilm from '../components/EditFilm'
-import ModalAddEditFilm from '../components/ModalAddEditFilm'
 import TableAdmin from '../components/TableAdmin'
 import { deleteMovie } from '../redux/listMoviesDucks'
 
