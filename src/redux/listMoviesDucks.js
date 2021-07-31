@@ -123,7 +123,7 @@ export const EditMovie = (movie, file, editModal) => {
             image: fileUrl
         }
         const document2 = await db.collection('/movies').path
-        console.log(document2)
+        console.log(updateMovie, document2 )
         // const document = await db.collection('/movies').doc(editModal.id).update(updateMovie)
         
         

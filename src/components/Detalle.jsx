@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import '../layout/menu-styles/carrusel/carrusel.css'
 import '../layout/all-films/detalle/detalle.css'
 import { Span } from '../styles/tagsText'
