@@ -19,19 +19,19 @@ const MostValued = () => {
             <ContainerCard>
             {
                 moviesValue.map((ele, i) => (
-                    <CardFilm
+                    <CardFilm className='card'
                     data-bs-toggle="modal" 
                     data-bs-target="#exampleModal" 
                     onClick={() => handleModal(ele)} 
                     key={i}  
                     imagen={ ele?.image ? ele?.image : `https://image.tmdb.org/t/p/w500/`+ 
                     ele?.poster_path}>
-                    <Pegatin style={ele?.vote_average <= 7.0 ? {border: '2px solid var(--blue)'}:{border: '2px solid var(--primary)'}}>
+                    <div className='pegatin' style={ele?.vote_average <= 7.0 ? {border: '2px solid var(--blue)'}:{border: '2px solid var(--primary)'}}>
                         <i className="fas fa-star" 
                         style={{color: "var(--primary)", fontSize:"20px"}}/>
                         <h4 
                          >{ele?.vote_average}</h4>
-                    </Pegatin>
+                    </div>
                     </CardFilm> 
                 ))
             } 

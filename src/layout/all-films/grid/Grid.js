@@ -4,20 +4,45 @@ import styled from 'styled-components'
 export const ContainerCard = styled.div`
     margin-top: 3rem;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: 20rem;
-    gap: 4rem 2rem ;
-    @media (max-width: 1800px){
-        grid-template-columns: repeat(5, 1fr);
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 150px);
+    gap: 1rem;
+    .card{
+        border-radius: 8px;
+        height: 250px;
+        width: 150px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        .pegatin{
+            display: -webkit-box;
+            align-items: center;
+            background-color: rgb(45 44 53 / 78%);;
+            border: 2px solid var(--primary);
+            width: 6rem;
+            height: 2.9rem;
+            margin-top: 24px;
+            padding: 5px;
+            border-radius: 0 30px 30px 0;
+            border-left: none;
+            h4{
+                font-size: 1.2rem;
+            }
+        }
     }
-    @media (max-width: 1300px){
-        grid-template-columns: repeat(4, 1fr);
+    @media screen and (min-width: 700px){
+        grid-template-columns: repeat(auto-fill, 180px);
+        .card{
+            height: 250px;
+            width: 180px;
+        }
     }
-    @media (max-width: 950px){
-        grid-template-columns: repeat(3, 1fr);
-    }
-    @media (max-width: 700px){
-        grid-template-columns: repeat(2, 1fr);
+    @media screen and (min-width: 1000px){
+        grid-template-columns: repeat(auto-fill, minmax(180px, 190px));
+        .card{
+            height: 250px;
+            width: 190px;
+        }
     }
 `
 

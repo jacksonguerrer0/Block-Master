@@ -13,19 +13,27 @@ export const GlobalStyles = createGlobalStyle`
 --fontSecondary: 'Inter', sans-serif;
 --blue: #5574B8;
 }
+*,
+*::after,
+*::before{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
     body{ 
         background-color: var(--background);
-        padding: 1% 5%;
+        padding: 0 5%;
     }
     //va en los titulos de cada componente
     h2{
     font-family: var(--fontPrimary);
     font-style: normal;
     font-weight: 700;
-    font-size: 48px;
+    font-size: 3rem;
     line-height: 58px;
     letter-spacing: -0.005em;
     color: var(--white);
+    padding: 0.5rem;
     }
     //Va en la targeta calificación, cuando no hay resultados en la busqueda
     h4{

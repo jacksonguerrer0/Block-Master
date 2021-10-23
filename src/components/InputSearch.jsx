@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { listSearchStore } from '../redux/listMoviesDucks'
-import { Form } from 'react-bootstrap'
-
+import { logoutEvent } from '../redux/loginDucks'
 const InputSearch = () => {
     const [search, setSearch] = useState('')
 
@@ -14,19 +13,19 @@ const InputSearch = () => {
         e.preventDefault()
         dispatch(listSearchStore(search))
     }
+    const handleLogoutClick = () => {
+        dispatch(logoutEvent())
+  } 
     return (
-        <Form className="d-flex barraBusqueda" onSubmit={submitSearch}>
-        <Form.Control
-          type="search"
-          placeholder="Buscar"
-          className="mr-2 inputBusqueda shadow-none"
-          aria-label="Search"
-          onChange={handleSearchChange}
-        />
-        <button className="buttonSearch">
-        <i className="fas fa-search"></i>
-        </button>
-      </Form>
+        <div className="containerSearch">
+            <div className=" barraBusqueda" onSubmit={submitSearch}>
+            <input type="text" />
+            <button className="buttonSearch">
+            <i className="fas fa-search"></i>
+            </button>
+            </div>
+            <i className="fas fa-sign-out-alt i-back" onClick={handleLogoutClick}></i>
+        </div>
     )
 }
 

@@ -85,14 +85,14 @@ const Admin = () => {
     ]
 
     return (
-        <div>
-            <h2>Hola</h2>
-            <p>{name}</p>
+        <>
             <ContainerAdmin>
+                <p><i className="fas fa-user-circle"></i></p>
+                <h3>{name}</h3>
                 <TableAdmin columns={columns} data={movies} />
             </ContainerAdmin>
             <EditFilm editModal={editModal}/>
-        </div>
+        </>
     )
 }
 

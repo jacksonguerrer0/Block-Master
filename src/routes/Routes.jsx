@@ -14,8 +14,34 @@ import Admin from '../containers/Admin'
 import { login } from '../redux/loginDucks'
 import { listMoviesApi } from '../redux/listMoviesDucks'
 import ViewFilm from '../components/ViewFilm'
+import styled, { keyframes } from 'styled-components'
+import variables from '../styles/variables.js'
 
-
+const animateLoader = keyframes`
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+`
+const ContainerLoading = styled.div`
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: ${variables.background};
+    width: 100vw;
+    height: 100vh;
+    .loader{
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 5px solid #8f8f8f11;
+        border-top-color: ${variables.primary};
+        animation: ${animateLoader} 1s infinite ease-in-out ;
+    }
+`
 
 const Routes = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,6 +50,7 @@ const Routes = () => {
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged(async (user) => {
+            setChecking(false)
             if(user?.uid){
                 setIsLoggedIn(true)
                 dispatch(login(user.uid, user.email, user.displayName))
@@ -32,13 +59,15 @@ const Routes = () => {
             else{
                 setIsLoggedIn(false)
             }
-            setChecking(false)
         })
     }, [dispatch, setChecking])
 
     if(checking){
         return(
-            <h1>cargando</h1>
+            <ContainerLoading>
+                <img src="https://i.imgur.com/vcIFPQU.png" alt="logo" />
+                <div className='loader'></div>
+            </ContainerLoading>
         )
     }
     return (

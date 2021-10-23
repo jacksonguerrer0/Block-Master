@@ -46,8 +46,8 @@ const Login = () => {
     }
     console.log(formikSign.onSubmit)
     return (
-        <>
         <ContainerForm>
+        <div className='containerForm'>
             {
             isRegister? 
             <>
@@ -135,8 +135,8 @@ const Login = () => {
             <div >
                 <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="google button" onClick={handleGoogleLoginClick}/>
             </div>
+        </div>
         </ContainerForm>
-        </>
     )
 }
 

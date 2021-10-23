@@ -2,9 +2,7 @@ import styled from 'styled-components'
 
 export const CardFilm = styled.div`
     background-image: url(${({imagen})=> imagen && imagen});
-    border-radius: 8px;
-    background-position: center;
-    background-repeat: no-repeat;
+    cursor: pointer;
     background-size: cover;
 `
 export const Pegatin = styled.div`
@@ -18,6 +16,9 @@ export const Pegatin = styled.div`
     padding: 5px;
     border-radius: 0 30px 30px 0;
     border-left: none;
+    h4{
+        font-size: 1.5rem;
+    }
 ` 
 export const I = styled.i`
     color: var(--primary);
