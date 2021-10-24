@@ -6,7 +6,7 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import AddFilm from './AddFilm';
 
 const TableAdmin = ({data, columns}) => {
-
+console.log(data, 'xd', columns)
     const { SearchBar } = Search;
 
     return (
@@ -18,19 +18,21 @@ const TableAdmin = ({data, columns}) => {
             search
         >
             {
-                props => 
+                props =>          
                 <>
                 <SearchBar 
                     { ...props.searchProps }
                     placeholder="Buscar algo"
-                />
+                 style={{marginRight: '1rem'}}/>
                 <AddFilm />
                 <BootstrapTable
                     { ...props.baseProps }
                     pagination={ paginationFactory() }
-                    cellSpacing="0"
+                    // cellSpacing="0"
                     wrapperClasses="table-responsive"
-                    classes="table-striped table-hover"
+                    classes="table-striped table-hover "
+                    noDataIndication='La tabla está vacia :('
+                    // selectRow={ { mode: 'checkbox' } }
                 />
                 </>
             }
