@@ -1,12 +1,12 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 import InputSearch from '../../../components/InputSearch'
 import { ContentNav } from './navMenuStyled'
 
 
 const NavMenu = ({showSearchCarrusel, setShowSearchCarrusel}) => {
-  const dispatch = useDispatch()
+//   const dispatch = useDispatch()
 
   return (
    <ContentNav> 

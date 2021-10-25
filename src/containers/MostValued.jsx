@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import Detalle from '../components/Detalle'
-import { CardFilm, Pegatin } from '../layout/all-films/card-film/CardFilm'
+import { CardFilm } from '../layout/all-films/card-film/CardFilm'
 import { ContainerCard } from '../layout/all-films/grid/Grid'
 
 

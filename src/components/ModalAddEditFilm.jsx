@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useForm } from '../hooks/useForm'
 import { movieNew } from '../redux/listMoviesDucks'
+import { ContainerModalAddEditFilm } from './modal-add-edit-film-styled/ModalAddEditFilm'
 
 const ModalAddEditFilm = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const [activeFile, setActiveFile] = useState('')
     let file = []
     const [values, handleInputChange, reset] = useForm({
         title: '',
@@ -15,8 +17,9 @@ const ModalAddEditFilm = () => {
     })
     const {title, video, release_date, vote_average, overview} = values
     const handleFileChange = (e) => {
-        console.log(e)
+        console.log(e.target.files)
         file = e.target.files[0];
+        setActiveFile('activeFile')
     }
 
     const handleSubmitSave = (e) => {
@@ -25,15 +28,14 @@ const ModalAddEditFilm = () => {
         reset()
     }
     return (
-        <>
-        <div className="modal fade " id="exampleModal2" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-        <div className="modal-dialog modal-dialog-centered  modal-xl ">
+        <ContainerModalAddEditFilm>
+        <div className={`modal fade `} id="exampleModal2" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
                 <div className="modal-header">
                     <i className="fas fa-times" data-bs-dismiss="modal" aria-label="Close"></i>
                 </div>
                 <div className="modal-body">
-                    <h2>Agregar Pelicula</h2>
                     <form onSubmit={handleSubmitSave}>
                         <input type="text" 
                         placeholder='Titulo de la pelicula'
@@ -68,19 +70,21 @@ const ModalAddEditFilm = () => {
                         placeholder='Descripcion de la pelicula'
                         onChange={handleInputChange}
                         ></textarea>
-
-                        <input type="file" 
-                        placeholder='Poster'
-                        name='file'
-                        onChange={handleFileChange}/>
-
+                        <div className='upload-btn-wrapper'>
+                            <input type="file" 
+                            placeholder='Poster'
+                            name='file'
+                            onChange={handleFileChange} />
+                            <button className='btn-file'>Subir Imagen </button>
+                            <i className={`far fa-check-circle ${activeFile}`} ></i>
+                        </div>
                         <button type='submit'>Guardar</button>
                     </form>
                 </div>
                 </div>
             </div>
         </div>
-    </>
+    </ContainerModalAddEditFilm>
     )
 }
 

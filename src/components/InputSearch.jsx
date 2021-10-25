@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
-import { listSearchStore } from '../redux/listMoviesDucks'
+// import { listSearchStore } from '../redux/listMoviesDucks'
 import { logoutEvent } from '../redux/loginDucks'
 const InputSearch = () => {
-    const [search, setSearch] = useState('')
+    // const [search, setSearch] = useState('')
 
     const dispatch = useDispatch()
-    const handleSearchChange = ({target}) => {
-        setSearch(target.value)
-    }
+    // const handleSearchChange = ({target}) => {
+    //     setSearch(target.value)
+    // }
     const submitSearch = (e) => {
         e.preventDefault()
-        dispatch(listSearchStore(search))
+        // dispatch(listSearchStore(search))
     }
     const handleLogoutClick = () => {
         dispatch(logoutEvent())

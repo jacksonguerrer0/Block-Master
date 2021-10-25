@@ -1,5 +1,5 @@
 import React, {  useState } from 'react'
-import { CardFilm, Pegatin } from '../layout/all-films/card-film/CardFilm'
+import { CardFilm } from '../layout/all-films/card-film/CardFilm'
 import { ContainerCard } from '../layout/all-films/grid/Grid'
 import Detalle from './Detalle'
 import InfiniteScroll from 'react-infinite-scroll-component';
