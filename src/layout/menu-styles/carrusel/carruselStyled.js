@@ -8,6 +8,7 @@ export const ContainerCarousel = styled.div`
         object-fit: cover;
         object-position: 70% 40%;
         cursor: pointer;
+        border-radius: 0.6rem;
     }
 `
 export const ButtonIndicator = styled.div`
