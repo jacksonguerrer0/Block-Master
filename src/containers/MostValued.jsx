@@ -7,10 +7,10 @@ import { ContainerCard } from '../layout/all-films/grid/Grid'
 
 
 const MostValued = () => {
-    const {movies} = useSelector(state => state.movies)
+    const {moviesRender} = useSelector(state => state.movies)
     const [element, setElement] = useState(null)
 
-    const moviesValue = movies.concat().sort((a,b)=>b.vote_average-a.vote_average)
+    const moviesValue = moviesRender.concat().sort((a,b)=>b.vote_average-a.vote_average)
     const handleModal = (ele) => {
         setElement(ele)
     }

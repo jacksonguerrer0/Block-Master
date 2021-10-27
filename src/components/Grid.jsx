@@ -7,16 +7,10 @@ import { useSelector } from 'react-redux'
 
 
 const Grid = () => {
-    const { movies } = useSelector(state => state.movies)
+    const { movies, moviesRender } = useSelector(state => state.movies)
+    const [refresh, setRefresh] = useState('saveFilm')
     const [element, setElement] = useState(null)
-    // const [items, setItems] = useState(movies.length = 10)
-
-
-    // const fetchMoreData = () => {
-    //     setItems(items + 10)
-    // };
-        console.log(movies)
-
+    console.log(movies)
     const handleModal = (ele) => {
         setElement(ele)
     }
@@ -28,7 +22,7 @@ const Grid = () => {
             loader={<h4>Loading...</h4>}>
             <ContainerCard >
                 {
-                    movies.map((ele, i) => (
+                    moviesRender.map((ele, i) => (
                         <CardFilm className='card'
                             data-bs-toggle="modal"
                             data-bs-target="#exampleModal"
@@ -46,7 +40,7 @@ const Grid = () => {
                     ))
                 }
             </ContainerCard>
-            <Detalle element={element} />
+            <Detalle element={element}  refresh={refresh} setRefresh={setRefresh}/>
         </InfiniteScroll>
     )
 }

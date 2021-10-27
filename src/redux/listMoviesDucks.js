@@ -6,23 +6,36 @@ import types from "./types/types";
 // constantes
 
 // reducer
-const moviesDucks = (state= { movies:[] }, action) => {
+const moviesDucks = (state= { movies:[], moviesRender : [] }, action) => {
     switch (action.type) {
         case types.listMovies:
             return {
                 ...state,
-                movies: [...action.payload]
+                movies: [...action.payload],
+                moviesRender: [...action.payload]
             };
         case types.newMovie:
             return {
                 ...state, 
-                movies: [action.payload, ...state.movies]
+                movies: [action.payload, ...state.movies],
+                moviesRender: [action.payload, ...state.movies],
             }
         case types.searchMovie:
             return {
                 ...state,
                 movies: [...state.movies],
                 moviesRender: action.payload
+            }
+        case types.listMoviesSave: 
+            return {
+                ...state,
+                filmSave: action.payload,
+                filmSaveRender: action.payload
+            }
+        case types.searchMovieSave: 
+            return {
+                ...state,
+                filmSaveRender: action.payload
             }
         default:
             return state;
@@ -134,15 +147,26 @@ export const EditMovie = (movie, file, editModal) => {
 
 // barra bsuqueda 
 
-export const listSearchStore = (searchText) => (dispatch, getState) => {
-    const {movies} = getState().movies
-    const filterSearch = movies.filter(ele =>
-        (ele.title.toLowerCase().includes(searchText.toLowerCase()))
-        )
+export const listSearchStore = (searchText, location) => (dispatch, getState) => {
+    const {movies, filmSave} = getState().movies
+    if(location === '/guardados'){
+        const filter = filmSave.filter(ele => (ele.title.toLowerCase().includes(searchText.toLowerCase())))
+        dispatch(searchMovieSave(filter))
+    }else{
+        const filterSearch = movies.filter(ele => (ele.title.toLowerCase().includes(searchText.toLowerCase())))
         dispatch(searchMovie(filterSearch))
+    }
 }
 
 export const searchMovie = (filterSearch) => ({
     type: types.searchMovie,
     payload: filterSearch
 } )
+export const movieSave = (movies) =>({
+    type: types.listMoviesSave,
+    payload: movies
+})
+export const searchMovieSave = (filter) => ({
+    type: types.searchMovieSave,
+    payload: filter
+})

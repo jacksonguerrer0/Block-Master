@@ -97,7 +97,7 @@ const Routes = () => {
                 <PrivateRoutes 
                     isAuthenticated={isLoggedIn}
                     exact
-                    path="/view/:title"
+                    path="/view/:id"
                     component={ ViewFilm } />
                 <PublicRoute 
                     isAuthenticated={isLoggedIn}

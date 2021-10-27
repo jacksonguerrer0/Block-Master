@@ -67,9 +67,14 @@ export const ContainerModal = styled.div`
 .ButtonDetalle{
     width: 47%;
     padding: 0.4rem;
+
 }
 .secondary{
     width: auto;
+    margin-left: 1rem;
+}
+.primary{
+    margin: 0;
 }
 
 @media all and (min-width: 1024px ) {

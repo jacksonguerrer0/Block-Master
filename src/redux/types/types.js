@@ -11,6 +11,8 @@ const types = {
     newMovie: 'Agregar una nueva pelicula',
     deleteMovie: 'Eliminar pelicula',
     editMovie: 'Editar pelicula',
-    searchMovie: 'buscar peli'
+    searchMovie: 'buscar peli',
+    searchMovieSave: 'Bucar pelicula guardada',
+    listMoviesSave: 'Listar las peliculas guardadas'
 }
 export default  types
