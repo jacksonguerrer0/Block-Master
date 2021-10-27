@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 
 const Grid = () => {
     const { movies, moviesRender } = useSelector(state => state.movies)
-    const [refresh, setRefresh] = useState('saveFilm')
+    const [refresh, setRefresh] = useState(null)
     const [element, setElement] = useState(null)
     console.log(movies)
     const handleModal = (ele) => {

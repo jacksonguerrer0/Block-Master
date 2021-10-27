@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 export const ContainerCard = styled.div`
     margin-top: 3rem;
+    margin-bottom: 3rem;
     display: grid;
     justify-content: center;
     grid-template-columns: repeat(auto-fill, 150px);
