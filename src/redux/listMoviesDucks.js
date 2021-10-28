@@ -1,4 +1,4 @@
-import { db } from "../firebase-config/firebaseConfig";
+import { db, storageFire } from "../firebase-config/firebaseConfig";
 import { fileUpload } from "../helpers/fileUpload";
 import types from "./types/types";
 
@@ -56,12 +56,14 @@ export const list = (movies) => ({
     type: types.listMovies,
     payload: movies
 })
+
 // actions
+
 export const listMoviesApi = () => async (dispatch) =>{
     const res = await db.collection('/movies').get();
     const movies = []
     res.forEach(element => {
-        movies.push(element.data())
+        movies.push({...element.data(), id: element.id })
     });
     dispatch(list(movies))
 }
@@ -77,28 +79,21 @@ export const deleteMovie = (id) => async (dispatch) => {
 }
 
 
-// Subir a cloudinary con fileUpload, obtener url para subir a firebase
+// Subir a storage multimedia con firebase, obtener url para subir a firebase
 export const movieNew = (movie, file) => {
     return async (dispatch) => {
-        let fileUrl=[]
-      
-        try {
-            fileUrl = await fileUpload(file)
-        } catch (error) {
-            fileUrl = []
-            console.log(error)
-        }
-
+        const refFile = storageFire.ref(`/imagenesPeliculas/${file.name}`)
+        await refFile.put(file)
+        const urlImage = await refFile.getDownloadURL()
         const newMovie = {
-            id: movie.title,
+            id: new Date().getTime(),
             title: movie.title,
             video: movie.video,
             release_date: movie.release_date,
             vote_average: movie.vote_average,
             overview: movie.overview,
-            image: fileUrl
+            image: urlImage
         }
-
         await db.collection(`/movies`).add(newMovie)
         dispatch(addNewMovie(newMovie))
     }
@@ -117,6 +112,7 @@ export const addNewMovie = (newMovie) => ({
 // editar pelis
 
 export const EditMovie = (movie, file, editModal) => {
+    console.log(movie, file, editModal )
     return async (dispatch) => {
         let fileUrl=[]
         try {
@@ -127,7 +123,7 @@ export const EditMovie = (movie, file, editModal) => {
         }
 
         const updateMovie = {
-            id: movie.title,
+            id: new Date().getTime(),
             title: movie.title,
             video: movie.video,
             release_date: movie.release_date,
@@ -135,8 +131,8 @@ export const EditMovie = (movie, file, editModal) => {
             overview: movie.overview,
             image: fileUrl
         }
-        const document2 = await db.collection('/movies').path
-        console.log(updateMovie, document2 )
+        const document2 = await db.collection('/movies')
+        console.log(document2 )
         // const document = await db.collection('/movies').doc(editModal.id).update(updateMovie)
         
         

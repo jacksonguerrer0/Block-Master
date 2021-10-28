@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import ModalAddEditFilm from './ModalAddEditFilm'
+import ModalAddEditFilm from './ModalAddFilm'
 
 const ContainerAddFilm = styled.div`
     display: inline-flex;

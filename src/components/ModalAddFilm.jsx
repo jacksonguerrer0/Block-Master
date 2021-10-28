@@ -7,7 +7,7 @@ import { ContainerModalAddEditFilm } from './modal-add-edit-film-styled/ModalAdd
 const ModalAddEditFilm = () => {
     const dispatch = useDispatch();
     const [activeFile, setActiveFile] = useState('')
-    let file = []
+    const [file, setFile] = useState(null)
     const [values, handleInputChange, reset] = useForm({
         title: '',
         video: '',
@@ -17,8 +17,7 @@ const ModalAddEditFilm = () => {
     })
     const {title, video, release_date, vote_average, overview} = values
     const handleFileChange = (e) => {
-        console.log(e.target.files)
-        file = e.target.files[0];
+        setFile(e.target.files[0])
         setActiveFile('activeFile')
     }
 
