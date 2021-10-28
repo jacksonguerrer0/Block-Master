@@ -7,7 +7,6 @@ import { movieSave } from '../redux/listMoviesDucks'
 
 
 const SaveFilms = () => {
-    const [refresh, setRefresh] = useState('saveFilm')
     const [element, setElement] = useState(null)
     const dispatch = useDispatch()
     const { filmSaveRender } = useSelector(state => state.movies)
@@ -39,7 +38,7 @@ const SaveFilms = () => {
                     ))
                 }
             </ContainerCard>
-            <Detalle element={element} setRefresh={setRefresh}  refresh={refresh} />
+            <Detalle element={element} statusFilmSave={true} />
         </>
     )
 }

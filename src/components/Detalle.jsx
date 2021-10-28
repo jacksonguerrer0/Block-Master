@@ -6,21 +6,11 @@ import { Link } from 'react-router-dom'
 import { ContainerModal } from '../layout/all-films/detalle/Detalle'
 import { movieSave } from '../redux/listMoviesDucks'
 import { useDispatch } from 'react-redux'
-const Detalle = ({element, setRefresh = null, refresh = null}) => {
-    const [saveFilm, setSaveFilm] = useState();
+const Detalle = ({element, statusFilmSave = false}) => {
+    const [saveFilm, setSaveFilm] = useState([]);
+    const [removeFavorite, setRemoveFavorite] = useState(statusFilmSave)
     const dispatch = useDispatch()
-    const handleButtonSaveFilm = () => {
-        if (typeof(refresh) !== 'string') {
-            return (
-                <button type="button" className="secondary buttonCarrusel ButtonDetalle" onClick={handleFilmLocalstorage}><i className="fas fa-plus"></i>VER MÁS TARDE</button>
-            )
-        }else{
-            return(
-                <button type="button" className="secondary buttonCarrusel ButtonDetalle" onClick={handleRemoveSaveFilm}><i className="fas fa-minus"></i>ELIMINAR DE FAVORITOS</button>
-            )
-        }
-    }
-
+    
     const handleFilmLocalstorage = () => {
         if(saveFilm instanceof Array){
             // Se almacena
@@ -42,17 +32,43 @@ const Detalle = ({element, setRefresh = null, refresh = null}) => {
             localStorage.setItem('SaveFilm', JSON.stringify([element]))
             dispatch(movieSave([element]))
         }
-        setRefresh('SetFilm')
+        setRemoveFavorite(!(removeFavorite))
     }
     const handleRemoveSaveFilm = () => {
         let deleteFilm = saveFilm.filter(ele => ele.id !== element.id)
         localStorage.setItem('SaveFilm', JSON.stringify(deleteFilm))
-        setRefresh(null)
         dispatch(movieSave(deleteFilm))
+        setRemoveFavorite(!(removeFavorite))
+
     }
     useEffect(() => {
         setSaveFilm(JSON.parse(localStorage.getItem('SaveFilm')))
-    }, [refresh])
+    }, [])
+    useEffect(() => {
+        const validateFindLocalStorage = () => {
+            let filter = removeFavorite
+            console.log(removeFavorite)
+            if(removeFavorite === true){
+                setRemoveFavorite(true)
+                return true
+            }
+            if(saveFilm && element !== null){
+                console.log('xdxd')
+                for (const ele of saveFilm) {
+                    filter = ele.id.includes(element.id)
+                    if(filter){
+                        console.log('existe')
+                        setRemoveFavorite(true)
+                        break
+                    }else{
+                        setRemoveFavorite(false)
+                        break
+                    }
+                }
+            }
+        }
+        validateFindLocalStorage()
+    }, [element, saveFilm, setRemoveFavorite])
     return (
         <ContainerModal>
         <div className="modal fade " id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -85,7 +101,11 @@ const Detalle = ({element, setRefresh = null, refresh = null}) => {
                                 <i className="fas fa-play"></i>VER AHORA</button>
                             </Link>
                         {
-                            handleButtonSaveFilm()
+                            !(removeFavorite)
+                            ?
+                            <button type="button" className="secondary buttonCarrusel ButtonDetalle" onClick={handleFilmLocalstorage}><i className="fas fa-plus"></i>VER MÁS TARDE</button>
+                            :
+                            <button type="button" className="secondary buttonCarrusel ButtonDetalle" onClick={handleRemoveSaveFilm}><i className="fas fa-minus"></i>ELIMINAR DE FAVORITOS</button>
                         }
                     </div>
                     </div>
@@ -97,4 +117,4 @@ const Detalle = ({element, setRefresh = null, refresh = null}) => {
     )
 }
 
-export default Detalle
+export default React.memo(Detalle)
