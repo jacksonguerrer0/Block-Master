@@ -1,5 +1,5 @@
+import Swal from "sweetalert2";
 import { db, storageFire } from "../firebase-config/firebaseConfig";
-import { fileUpload } from "../helpers/fileUpload";
 import types from "./types/types";
 
 
@@ -68,20 +68,24 @@ export const listMoviesApi = () => async (dispatch) =>{
     dispatch(list(movies))
 }
 
-export const deleteMovie = (id) => async (dispatch) => {
-    const document = await db.collection('/movies').where('id', '==', id);
-    const response = await document.get()
-    response.docs.forEach(movie => {
-        movie.ref.delete();
-    });
+export const deleteMovie = (id, nameImage) => async (dispatch) => {
+    await db.collection('/movies').doc(id).delete();
+    // const deleteImg = await storageFire.ref(`/imagenesPeliculas`)
+    // console.log(id)
+    // response.docs.forEach(movie => {
+    //     movie.ref.delete();
+    // });
     dispatch(listMoviesApi())
-    console.log(response)
+    if(nameImage !== undefined){
+        await storageFire.ref(`/imagenesPeliculas/${nameImage}`).delete()
+    }
+    // console.log(image)
 }
 
 
 // Subir a storage multimedia con firebase, obtener url para subir a firebase
 export const movieNew = (movie, file) => {
-    return async (dispatch) => {
+    return async (dispatch) => {  
         const refFile = storageFire.ref(`/imagenesPeliculas/${file.name}`)
         await refFile.put(file)
         const urlImage = await refFile.getDownloadURL()
@@ -92,14 +96,27 @@ export const movieNew = (movie, file) => {
             release_date: movie.release_date,
             vote_average: movie.vote_average,
             overview: movie.overview,
-            image: urlImage
+            image: urlImage,
+            nameImage: refFile.name
         }
-        await db.collection(`/movies`).add(newMovie)
+        let res = await db.collection(`/movies`).add(newMovie)
+        if (!(res)) {
+            Swal.fire(
+                'Oops!',
+                'Ha ocurrido un error al agregar.',
+                'error'
+
+            )
+        } else {
+            Swal.fire(
+                'Agregado!',
+                'Tu archivo ha sido agregado.',
+                'success'
+            )
+        }
         dispatch(addNewMovie(newMovie))
     }
 }
-
-
 export const addNewMovie = (newMovie) => ({
     type: types.newMovie,
     payload: {
@@ -112,36 +129,30 @@ export const addNewMovie = (newMovie) => ({
 // editar pelis
 
 export const EditMovie = (movie, file, editModal) => {
-    console.log(movie, file, editModal )
-    return async (dispatch) => {
-        let fileUrl=[]
-        try {
-            fileUrl = await fileUpload(file)
-        } catch (error) {
-            fileUrl = []
-            console.log(error)
+    return async (dispatch, getState) => {
+        const refFile = storageFire.ref(`/imagenesPeliculas/${file.name}`)
+        await refFile.put(file)
+        let urlImage = ''
+        if(file.name !== undefined){
+            urlImage = await refFile.getDownloadURL()
         }
-
         const updateMovie = {
             id: new Date().getTime(),
-            title: movie.title,
-            video: movie.video,
-            release_date: movie.release_date,
-            vote_average: movie.vote_average,
-            overview: movie.overview,
-            image: fileUrl
+            title: movie.title.length === 0 ? editModal.title: movie.title,
+            video: movie.video.length === 0 ? editModal.video: movie.video,
+            release_date: movie.release_date.length === 0 ? editModal.release_date: movie.release_date,
+            vote_average: movie.vote_average.length === 0 ? editModal.vote_average: movie.vote_average,
+            overview: movie.overview.length === 0 ? editModal.overview: movie.overview,
+            image: urlImage.length > 0 ? urlImage : editModal.image || editModal.poster_path ,
+            nameImage: urlImage.length > 0 ? refFile.name: 'Sin id de imagen'
         }
-        const document2 = await db.collection('/movies')
-        console.log(document2 )
-        // const document = await db.collection('/movies').doc(editModal.id).update(updateMovie)
-        
-        
-        // console.log(document)
-}
+        await db.collection('/movies').doc(editModal.id).update(updateMovie)
+        dispatch(listMoviesApi())
+    }
 }
 
 
-// barra bsuqueda 
+// barra busqueda 
 
 export const listSearchStore = (searchText, location) => (dispatch, getState) => {
     const {movies, filmSave} = getState().movies

@@ -47,17 +47,14 @@ const Detalle = ({element, statusFilmSave = false}) => {
     useEffect(() => {
         const validateFindLocalStorage = () => {
             let filter = removeFavorite
-            console.log(removeFavorite)
             if(removeFavorite === true){
                 setRemoveFavorite(true)
                 return true
             }
             if(saveFilm && element !== null){
-                console.log('xdxd')
                 for (const ele of saveFilm) {
                     filter = ele.id.includes(element.id)
                     if(filter){
-                        console.log('existe')
                         setRemoveFavorite(true)
                         break
                     }else{
@@ -68,7 +65,7 @@ const Detalle = ({element, statusFilmSave = false}) => {
             }
         }
         validateFindLocalStorage()
-    }, [element, saveFilm, setRemoveFavorite])
+    }, [element, removeFavorite, saveFilm])
     return (
         <ContainerModal>
         <div className="modal fade " id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

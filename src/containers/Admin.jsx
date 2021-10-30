@@ -10,7 +10,7 @@ import { deleteMovie } from '../redux/listMoviesDucks'
 
 const Admin = () => {
     const dispatch = useDispatch()
-    const  [editModal, setEditModal] = useState(null)
+    const  [editModal, setEditModal] = useState({})
     const { name } = useSelector(state => state.login)
     const { movies } = useSelector(state => state.movies)
 
@@ -25,7 +25,7 @@ const Admin = () => {
             confirmButtonText: 'Sí Eliminarlo!'
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(deleteMovie(movie.id)).then((response) => {
+                dispatch(deleteMovie(movie.id, movie.nameImage)).then((response) => {
                     if (response) {
                         Swal.fire(
                             'Oops!',

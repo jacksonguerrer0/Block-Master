@@ -44,7 +44,6 @@ const Login = () => {
     const handleGoogleLoginClick = () => {
         dispatch(loginGoogle())
     }
-    console.log(formikSign.onSubmit)
     return (
         <ContainerForm>
         <div className='containerForm'>

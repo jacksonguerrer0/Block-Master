@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import Swal from 'sweetalert2'
 import { useForm } from '../hooks/useForm'
 import { EditMovie } from '../redux/listMoviesDucks'
 import { ContainerModalAddEditFilm } from './modal-add-edit-film-styled/ModalAddEditFilm'
@@ -7,7 +8,7 @@ import { ContainerModalAddEditFilm } from './modal-add-edit-film-styled/ModalAdd
 const EditFilm = ({ editModal }) => {
     const dispatch = useDispatch()
     const [activeFile, setActiveFile] = useState('')
-    let file = []
+    const [file, setFile] = useState({})
     const [values, handleInputChange, reset] = useForm({
         title: '',
         video: '',
@@ -15,17 +16,42 @@ const EditFilm = ({ editModal }) => {
         vote_average: '',
         overview: ''
     })
-    const {title, video, release_date, vote_average, overview} = values
-
     const handleFileChange = (e) => {
-        console.log(e)
-        file = e.target.files[0];
+        setFile(e.target.files[0])
         setActiveFile('activeFile')
     }
 
     const handleSubmitSave = (e) => {
         e.preventDefault()
-        dispatch(EditMovie(values, file, editModal))
+        Swal.fire({
+            title: `Estás seguro de actualizar ${editModal.title} ?`,
+            text: "Esta acción no es reversible!",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, actualizar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(EditMovie(values, file, editModal)).then((response) => {
+                    if (response) {
+                        Swal.fire(
+                            'Oops!',
+                            'Ha ocurrido un error al actualizar.',
+                            'error'
+
+                        )
+                    } else {
+                        reset()
+                        Swal.fire(
+                            'Actualizado!',
+                            'Tu archivo ha sido actualizado.',
+                            'success'
+                        )
+                    }
+                })
+            }
+        })
         reset()
     }
     return (
@@ -39,42 +65,38 @@ const EditFilm = ({ editModal }) => {
                 <div className="modal-body">
                     <form onSubmit={handleSubmitSave}>
                         <input type="text" 
-                        placeholder='Titulo de la pelicula'
+                        defaultValue={editModal.title}
                         name='title'
-                        value={title}
                         onChange={handleInputChange}/>
-
                         <input type="text" 
-                        placeholder='url video'
+                        defaultValue={editModal.video ? editModal.video: 'Agrega un video'}
                         name='video'
-                        value={video}
                         onChange={handleInputChange}/>
 
                         <input type="text" 
-                        placeholder='Fecha de estreno'
+                        defaultValue={editModal.release_date}
                         name='release_date'
-                        value={release_date}
                         onChange={handleInputChange}/>
 
                         <input type="text" 
-                        placeholder='Calificación'
                         name='vote_average'
-                        value={vote_average}
+                        defaultValue={editModal.vote_average}
                         onChange={handleInputChange}/>
 
                         <textarea 
                         name="overview" 
-                        value={overview}
+                        defaultValue={editModal.overview}
                         cols="30" 
                         rows="3"
                         placeholder='Descripcion de la pelicula'
                         onChange={handleInputChange}
                         ></textarea>
+                        <p style={{color: 'black'}}>{editModal?.poster_path  ?'Es obligatorio editar la imagen antes de guardar ya que viene por defecto': ''}</p>
                         <div className='upload-btn-wrapper'>
-                        <input type="file" 
-                        placeholder='Poster'
-                        name='file'
-                        onChange={handleFileChange}/>
+                            <input type="file" 
+                            placeholder='Poster'
+                            name='file'
+                            onChange={handleFileChange}/>
                             <button className='btn-file'>Subir Imagen</button>
                             <i className={`far fa-check-circle ${activeFile}`} ></i>
                         </div>

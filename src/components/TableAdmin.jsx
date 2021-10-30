@@ -6,7 +6,6 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import AddFilm from './AddFilm';
 
 const TableAdmin = ({data, columns}) => {
-console.log(data, 'xd', columns)
     const { SearchBar } = Search;
 
     return (
