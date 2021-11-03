@@ -6,11 +6,10 @@ import { Link } from 'react-router-dom'
 import { ContainerModal } from '../layout/all-films/detalle/Detalle'
 import { movieSave } from '../redux/listMoviesDucks'
 import { useDispatch } from 'react-redux'
-const Detalle = ({element, statusFilmSave = false}) => {
+const Detalle = ({element}) => {
     const [saveFilm, setSaveFilm] = useState([]);
-    const [removeFavorite, setRemoveFavorite] = useState(statusFilmSave)
+    const [removeFavorite, setRemoveFavorite] = useState()
     const dispatch = useDispatch()
-    
     const handleFilmLocalstorage = () => {
         if(saveFilm instanceof Array){
             // Se almacena
@@ -32,40 +31,36 @@ const Detalle = ({element, statusFilmSave = false}) => {
             localStorage.setItem('SaveFilm', JSON.stringify([element]))
             dispatch(movieSave([element]))
         }
-        setRemoveFavorite(!(removeFavorite))
+        setRemoveFavorite(true)
     }
     const handleRemoveSaveFilm = () => {
         let deleteFilm = saveFilm.filter(ele => ele.id !== element.id)
         localStorage.setItem('SaveFilm', JSON.stringify(deleteFilm))
         dispatch(movieSave(deleteFilm))
-        setRemoveFavorite(!(removeFavorite))
-
+        setRemoveFavorite(false)
+    }
+    const getSaveFilm  = () => {
+        setSaveFilm(JSON.parse(localStorage.getItem('SaveFilm')))
     }
     useEffect(() => {
-        setSaveFilm(JSON.parse(localStorage.getItem('SaveFilm')))
+        getSaveFilm()
     }, [])
     useEffect(() => {
         const validateFindLocalStorage = () => {
-            let filter = removeFavorite
-            if(removeFavorite === true){
+            let filmsSave = JSON.parse(localStorage.getItem('SaveFilm'))
+            let filter = filmsSave.filter(ele => ele.id === element?.id)
+            if(filter.length === 1){
+                console.log('está en local')
                 setRemoveFavorite(true)
-                return true
             }
-            if(saveFilm && element !== null){
-                for (const ele of saveFilm) {
-                    filter = ele.id.includes(element.id)
-                    if(filter){
-                        setRemoveFavorite(true)
-                        break
-                    }else{
-                        setRemoveFavorite(false)
-                        break
-                    }
-                }
+            else{
+                console.log('no esta en local')
+                setRemoveFavorite(false)
             }
+            console.log('ok')
         }
         validateFindLocalStorage()
-    }, [element, removeFavorite, saveFilm])
+    }, [ element, removeFavorite, saveFilm])
     return (
         <ContainerModal>
         <div className="modal fade " id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
