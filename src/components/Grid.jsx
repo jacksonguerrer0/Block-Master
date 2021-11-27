@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { CardFilm } from '../layout/all-films/card-film/CardFilm'
 import { ContainerCard } from '../layout/all-films/grid/Grid'
 import Detalle from './Detalle'
@@ -13,15 +13,20 @@ const Grid = () => {
     const handleModal = (ele) => {
         setElement(ele)
     }
+    const [data, setData] = useState([])
+    
+    useEffect(() => {
+        setData(moviesRender)
+    }, [moviesRender])
     return (
         <InfiniteScroll
-            dataLength={movies.length}
-            next={movies.length}
+            dataLength={data.length}
+            next={() => setData([...data, ...moviesRender])}
             hasMore={true}
             loader={<h4>Loading...</h4>}>
             <ContainerCard >
                 {
-                    moviesRender.map((ele, i) => (
+                    data.map((ele, i) => (
                         <CardFilm className='card'
                             data-bs-toggle="modal"
                             data-bs-target="#exampleModal"

@@ -50,14 +50,11 @@ const Detalle = ({element}) => {
             let filmsSave = JSON.parse(localStorage.getItem('SaveFilm'))
             let filter = filmsSave.filter(ele => ele.id === element?.id)
             if(filter.length === 1){
-                console.log('está en local')
                 setRemoveFavorite(true)
             }
             else{
-                console.log('no esta en local')
                 setRemoveFavorite(false)
             }
-            console.log('ok')
         }
         validateFindLocalStorage()
     }, [ element, removeFavorite, saveFilm])

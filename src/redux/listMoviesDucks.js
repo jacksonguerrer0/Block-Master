@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { db, storageFire } from "../firebase-config/firebaseConfig";
+import seeders from "../utils/seeders";
 import types from "./types/types";
 
 
@@ -43,14 +44,6 @@ const moviesDucks = (state= { movies:[], moviesRender : [] }, action) => {
 }
 export default moviesDucks
 
-// subir a firebase 
-export const registerDBMovies = (movies) => async (dispatch) =>  {
-    try {
-        await db.collection('/movies').add(movies)
-    } catch (error) {
-        throw error
-    }
-}
 
 export const list = (movies) => ({
     type: types.listMovies,
@@ -58,7 +51,23 @@ export const list = (movies) => ({
 })
 
 // actions
-
+export const getDocOrAddDoc = (id) => async (dispatch) => {
+    // Referencia del documento
+    const docRef = await db.collection(`movies/`).doc(id) 
+    const docRes = await docRef.get()
+    // Si existe el documeno
+    if(docRes.exists){
+      docRef.onSnapshot((doc) => {
+        dispatch(list(doc.data().movies))
+      });
+    }
+    // Si no existe puedo agregar valores por defecto 
+    else{
+      const resData = await seeders()
+      await db.collection('movies').doc(id).set({movies: resData})
+    //   return docData
+    }
+  }
 export const listMoviesApi = () => async (dispatch) =>{
     const res = await db.collection('/movies').get();
     const movies = []
@@ -68,24 +77,27 @@ export const listMoviesApi = () => async (dispatch) =>{
     dispatch(list(movies))
 }
 
-export const deleteMovie = (id, nameImage) => async (dispatch) => {
-    await db.collection('/movies').doc(id).delete();
-    // const deleteImg = await storageFire.ref(`/imagenesPeliculas`)
-    // console.log(id)
-    // response.docs.forEach(movie => {
-    //     movie.ref.delete();
-    // });
-    dispatch(listMoviesApi())
-    if(nameImage !== undefined){
-        await storageFire.ref(`/imagenesPeliculas/${nameImage}`).delete()
-    }
-    // console.log(image)
+export const deleteMovie = (id, nameImage) => async (dispatch, selector) => {
+    const {login, movies} = selector(state => state) 
+    const email = login.email
+    const docRef = await db.collection('/movies').doc(email);
+    const filter = movies.movies.filter(ele => ele.id !== id)
+    // console.log(filter)
+    // const newArrMovies = [...]
+    await docRef.update({movies: filter})
+    await storageFire.ref(`/imagenesPeliculas/${nameImage}`).delete()
+    // // console.log(id)
+    // // response.docs.forEach(movie => {
+    // //     movie.ref.delete();
+    // // });
 }
 
 
 // Subir a storage multimedia con firebase, obtener url para subir a firebase
 export const movieNew = (movie, file) => {
-    return async (dispatch) => {  
+    return async (dispatch, selector) => {  
+        const {login, movies} = selector(state => state) 
+        const email = login.email
         const refFile = storageFire.ref(`/imagenesPeliculas/${file.name}`)
         await refFile.put(file)
         const urlImage = await refFile.getDownloadURL()
@@ -99,8 +111,10 @@ export const movieNew = (movie, file) => {
             image: urlImage,
             nameImage: refFile.name
         }
-        let res = await db.collection(`/movies`).add(newMovie)
-        if (!(res)) {
+        const newArrMovies = [...movies.movies, newMovie]
+        let res = await db.collection(`/movies`).doc(email).update({movies: newArrMovies})
+        console.log(res)
+        if (res) {
             Swal.fire(
                 'Oops!',
                 'Ha ocurrido un error al agregar.',
@@ -129,7 +143,10 @@ export const addNewMovie = (newMovie) => ({
 // editar pelis
 
 export const EditMovie = (movie, file, editModal) => {
-    return async (dispatch, getState) => {
+    console.log(movie, editModal, file)
+    return async (dispatch, selector) => {
+        const {login, movies} = selector(state => state) 
+        const email = login.email
         const refFile = storageFire.ref(`/imagenesPeliculas/${file.name}`)
         await refFile.put(file)
         let urlImage = ''
@@ -146,8 +163,10 @@ export const EditMovie = (movie, file, editModal) => {
             image: urlImage.length > 0 ? urlImage : editModal.image || editModal.poster_path ,
             nameImage: urlImage.length > 0 ? refFile.name: 'Sin id de imagen'
         }
-        await db.collection('/movies').doc(editModal.id).update(updateMovie)
-        dispatch(listMoviesApi())
+        const filter = movies.movies.filter(ele => ele.id !== editModal.id )
+        const newArrMovies = [...filter, updateMovie]
+        // console.log(editModal)
+        await db.collection('/movies').doc(email).update({movies: newArrMovies})
     }
 }
 

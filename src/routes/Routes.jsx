@@ -12,7 +12,7 @@ import PrivateRoutes from './PrivateRoutes'
 import PublicRoute from './PublicRoutes'
 import Admin from '../containers/Admin'
 import { login } from '../redux/loginDucks'
-import { listMoviesApi } from '../redux/listMoviesDucks'
+import { getDocOrAddDoc } from '../redux/listMoviesDucks'
 import ViewFilm from '../components/ViewFilm'
 import styled, { keyframes } from 'styled-components'
 import variables from '../styles/variables.js'
@@ -54,7 +54,7 @@ const Routes = () => {
             if(user?.uid){
                 setIsLoggedIn(true)
                 dispatch(login(user.uid, user.email, user.displayName))
-                dispatch(listMoviesApi())
+                dispatch(getDocOrAddDoc(user.email))
             }
             else{
                 setIsLoggedIn(false)

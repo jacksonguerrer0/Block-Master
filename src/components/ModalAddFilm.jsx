@@ -25,6 +25,7 @@ const ModalAddEditFilm = () => {
         e.preventDefault()
         dispatch(movieNew(values, file))
         reset()
+        setFile(null)
     }
     return (
         <ContainerModalAddEditFilm>
