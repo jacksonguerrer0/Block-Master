@@ -47,7 +47,7 @@ const Detalle = ({element}) => {
     }, [])
     useEffect(() => {
         const validateFindLocalStorage = () => {
-            let filmsSave = JSON.parse(localStorage.getItem('SaveFilm'))
+            let filmsSave = JSON.parse(localStorage.getItem('SaveFilm')) ? JSON.parse(localStorage.getItem('SaveFilm')) : [];
             let filter = filmsSave.filter(ele => ele.id === element?.id)
             if(filter.length === 1){
                 setRemoveFavorite(true)
