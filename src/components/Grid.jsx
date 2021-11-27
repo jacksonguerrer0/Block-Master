@@ -7,14 +7,14 @@ import { useSelector } from 'react-redux'
 
 
 const Grid = () => {
-    const { movies, moviesRender } = useSelector(state => state.movies)
+    const { moviesRender } = useSelector(state => state.movies)
     const [refresh, setRefresh] = useState(null)
     const [element, setElement] = useState(null)
     const handleModal = (ele) => {
         setElement(ele)
     }
     const [data, setData] = useState([])
-    
+
     useEffect(() => {
         setData(moviesRender)
     }, [moviesRender])
